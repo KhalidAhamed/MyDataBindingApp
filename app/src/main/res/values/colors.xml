@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="Home">#03A9F4</color>
+    <color name="Profile">#FFEB3B</color>
+    <color name="Setting">#85E189</color>
+</resources>
