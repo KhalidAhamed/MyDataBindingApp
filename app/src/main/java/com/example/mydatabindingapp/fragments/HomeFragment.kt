@@ -1,26 +1,15 @@
 package com.example.mydatabindingapp.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mydatabindingapp.R
 import com.example.mydatabindingapp.databinding.FragmentHomeBinding
-import com.example.mydatabindingapp.model.MemeModel
-import com.example.mydatabindingapp.model.Product
-import com.example.mydatabindingapp.model.ProductsModel
-import com.example.mydatabindingapp.recyclerAdapter.ProductsAdapter
-import com.example.mydatabindingapp.repository.MemesRepository
-import com.example.mydatabindingapp.retrofit.ApiInterface
-import com.example.mydatabindingapp.retrofit.RetrofitInstance
-import com.example.mydatabindingapp.viewModel.MemeViewModel
-import com.example.mydatabindingapp.viewModel.MemeViewModelFactory
+import com.example.mydatabindingapp.model.ProgrammingItem
+import com.example.mydatabindingapp.recyclerAdapter.ProgrammingAdapter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,9 +26,7 @@ class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var memeViewModel: MemeViewModel
-    private lateinit var binding : FragmentHomeBinding
-    private lateinit var productsAdapter: ProductsAdapter
+    private lateinit var binding: FragmentHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,31 +40,32 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+        binding = FragmentHomeBinding.inflate(inflater,container,false)
+        val adapter = ProgrammingAdapter()
 
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false)
-        val apiInterface = RetrofitInstance.getInstance().create(ApiInterface::class.java)
-        val repository = MemesRepository(apiInterface)
-        memeViewModel = ViewModelProvider(this, MemeViewModelFactory(repository)).get(MemeViewModel::class.java)
-//        val product1 = Product("Apple","smartphone","An apple mobile which is nothing like apple",12.96,1,"https://i.dummyjson.com/data/products/1/1.jpg",549,4.69,94,"https://i.dummyjson.com/data/products/1/thumbnail.jpg","iPhone 9")
-//        val product2 = Product("Apple","smartphone","An apple mobile which is nothing like apple",12.96,1,"https://i.dummyjson.com/data/products/1/1.jpg",549,4.69,94,"https://i.dummyjson.com/data/products/1/thumbnail.jpg","iPhone 9")
-//        val product3 = Product("Apple","smartphone","An apple mobile which is nothing like apple",12.96,1,"https://i.dummyjson.com/data/products/1/1.jpg",549,4.69,94,"https://i.dummyjson.com/data/products/1/thumbnail.jpg","iPhone 9")
-//
-//        val list = arrayListOf<Product>(product1,product2,product3)
-        memeViewModel.products.observe(viewLifecycleOwner, Observer {
-            var products = ProductsModel(it.limit,it.products,it.skip,it.total)
-            Log.e("Res",products.toString())
-            
+        val p1 = ProgrammingItem(1,"J","Java")
+        val p2 = ProgrammingItem(2,"K","Kotlin")
+        val p3 = ProgrammingItem(3,"A","Android")
+        val p4 = ProgrammingItem(4,"J","JavaScript")
 
-        })
+        adapter.submitList(listOf(p1,p2,p3,p4))
+
+        binding.recView.layoutManager = LinearLayoutManager(context)
+        binding.recView.setHasFixedSize(true)
+        binding.recView.adapter = adapter
 
 
-
-        // Inflate the layout for this fragment
-
-        binding.productsrRecyclerView.layoutManager = LinearLayoutManager(context)
-        with(binding){
-            binding.productsrRecyclerView.adapter = productsAdapter
+        binding.updateBtn.setOnClickListener {
+            val p3 = ProgrammingItem(3,"A","Android")
+            val p4 = ProgrammingItem(4,"R","Rust")
+            val p5 = ProgrammingItem(5,"G","GoLang")
+            val p6 = ProgrammingItem(6,"N","Node")
+            adapter.submitList(listOf(p3,p4,p5,p6))
         }
+
+
+
+
         return binding.root
     }
 

@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.mydatabindingapp.model.MemeModel
-import com.example.mydatabindingapp.model.ProductsModel
 import com.example.mydatabindingapp.retrofit.ApiInterface
 
 class MemesRepository(private val apiInterface: ApiInterface) {
@@ -12,9 +11,6 @@ class MemesRepository(private val apiInterface: ApiInterface) {
     val memes : LiveData<MemeModel>
         get() = memesLiveData
 
-    private val productsLiveData = MutableLiveData<ProductsModel>()
-    val products : LiveData<ProductsModel>
-        get() = productsLiveData
 
     suspend fun getMemes(){
         val result = apiInterface.getMemes()
@@ -24,11 +20,5 @@ class MemesRepository(private val apiInterface: ApiInterface) {
         }
     }
 
-    suspend fun getProducts(){
-        val result = apiInterface.getProducts()
-        if (result.isSuccessful){
-            productsLiveData.postValue(result.body())
-        }
-    }
 
 }
